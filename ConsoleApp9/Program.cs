@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace ConsoleApp9
@@ -42,7 +42,7 @@ namespace ConsoleApp9
             }
             public void Show()
             {
-
+                Console.Clear();
                 Console.WriteLine("상태보기");
                 Console.WriteLine("캐릭터의 정보가 표시됩니다.");
                 Console.WriteLine($"Lv. {player.Level:D2}");
@@ -60,6 +60,8 @@ namespace ConsoleApp9
                     return;
                 else
                     Console.WriteLine("잘못된 입력입니다.");
+                Console.WriteLine("계속하려면 아무 키나 누르세요...");
+                Console.ReadKey();
             }
         }
 
@@ -74,13 +76,13 @@ namespace ConsoleApp9
 
             public void Show()
             {
-
+                Console.Clear();
                 Console.WriteLine("인벤토리");
                 Console.WriteLine("인벤토리를 관리할 수 있습니다.");
                 Console.WriteLine();
                 Console.WriteLine("[아이템 목록]");
 
-                List<Item> items = player.Inventory; // Player 클래스의 Inventory 속성 사용
+                List<Item> items = player.Inventory; 
 
                 if (items.Count == 0)
                 {
@@ -90,8 +92,16 @@ namespace ConsoleApp9
                 {
                     for (int i = 0; i < items.Count; i++)
                     {
-                        string equipped = (items[i].Equipped) ? "" : "[E]";
-                        Console.WriteLine($"- {equipped}{items[i].Name} | {items[i].Ability} | {items[i].Description}");
+                        if (items[i].Attack == 0)
+                        {
+                            string equipped = (items[i].Equipped) ? "" : "[E]";
+                            Console.WriteLine($"- {i + 1} {equipped}{items[i].Name} | {items[i].Ability} {items[i].Defense} | {items[i].Description}");
+                        }
+                        if (items[i].Defense == 0)
+                        {
+                            string equipped = (items[i].Equipped) ? "" : "[E]";
+                            Console.WriteLine($"- {i + 1} {equipped}{items[i].Name} | {items[i].Ability} {items[i].Attack} | {items[i].Description}");
+                        }
                     }
                 }
 
@@ -110,6 +120,8 @@ namespace ConsoleApp9
                         break;
                     default:
                         Console.WriteLine("잘못된 입력입니다.");
+                        Console.WriteLine("계속하려면 아무 키나 누르세요...");
+                        Console.ReadKey();
                         break;
                 }
             }
@@ -132,13 +144,13 @@ namespace ConsoleApp9
 
             public void Show()
             {
-
+                Console.Clear();
                 Console.WriteLine("인벤토리 - 장착 관리");
                 Console.WriteLine("보유 중인 아이템을 관리할 수 있습니다.");
                 Console.WriteLine();
                 Console.WriteLine("[아이템 목록]");
 
-                List<Item> items = player.Inventory; // Player 클래스의 Inventory 속성 사용
+                List<Item> items = player.Inventory;
 
                 if (items.Count == 0)
                 {
@@ -148,8 +160,17 @@ namespace ConsoleApp9
                 {
                     for (int i = 0; i < items.Count; i++)
                     {
-                        string equipped = (items[i].Equipped) ? "" : "[E]";
-                        Console.WriteLine($"- {i + 1} {equipped}{items[i].Name} | {items[i].Ability} | {items[i].Description}");
+                        if (items[i].Attack == 0)
+                        {
+                            string equipped = (items[i].Equipped) ? "" : "[E]";
+                            Console.WriteLine($"- {i + 1} {equipped}{items[i].Name} | {items[i].Ability} {items[i].Defense} | {items[i].Description}");
+                        }
+                        if (items[i].Defense == 0)
+                        {
+                            string equipped = (items[i].Equipped) ? "" : "[E]";
+                            Console.WriteLine($"- {i + 1} {equipped}{items[i].Name} | {items[i].Ability} {items[i].Attack} | {items[i].Description}");
+                        }
+
                     }
                 }
 
@@ -166,39 +187,33 @@ namespace ConsoleApp9
                     Item selected = items[itemIndex - 1];
                     if (!selected.Equipped)
                     {
-                        // 이미 장착된 아이템인지 확인
-                        bool alreadyEquipped = false;
-                        foreach (Item item in items)
-                        {
-                            if (item.Equipped && item != selected)
-                            {
-                                alreadyEquipped = true;
-                                break;
-                            }
-                        }
+                        selected.Equipped = true;
+                        Console.WriteLine($"아이템 '{selected.Name}'을(를) 장착했습니다.");
+                        player.Attack += selected.Attack;
+                        player.Defense += selected.Defense;
+                        Console.WriteLine("계속하려면 아무 키나 누르세요...");
+                        Console.ReadKey();
 
-                        if (!alreadyEquipped)
-                        {
-                            selected.Equipped = true;
-                            Console.WriteLine($"아이템 '{selected.Name}'을(를) 장착했습니다.");
-                        }
-                        else
-                        {
-                            Console.WriteLine("이미 다른 아이템이 장착되어 있습니다.");
-                        }
                     }
                     else
                     {
                         selected.Equipped = false;
                         Console.WriteLine($"아이템 '{selected.Name}'의 장착을 해제했습니다.");
+                        player.Attack -= selected.Attack;
+                        player.Defense -= selected.Defense;
+                        Console.WriteLine("계속하려면 아무 키나 누르세요...");
+                        Console.ReadKey();
                     }
                 }
                 else
                 {
                     Console.WriteLine("잘못된 입력입니다.");
+                    Console.WriteLine("계속하려면 아무 키나 누르세요...");
+                    Console.ReadKey();
                 }
             }
         }
+
 
 
 
@@ -216,7 +231,7 @@ namespace ConsoleApp9
 
             public void Show()
             {
-               
+                Console.Clear();
                 Console.WriteLine("상점");
                 Console.WriteLine("필요한 아이템을 얻을 수 있는 상점입니다.");
                 Console.WriteLine();
@@ -253,6 +268,8 @@ namespace ConsoleApp9
                         break;
                     default:
                         Console.WriteLine("잘못된 입력입니다.");
+                        Console.WriteLine("계속하려면 아무 키나 누르세요...");
+                        Console.ReadKey();
                         break;
                 }
             }
@@ -273,7 +290,7 @@ namespace ConsoleApp9
 
             public void Show()
             {
-                
+                Console.Clear();
                 Console.WriteLine("상점 - 아이템 구매");
                 Console.WriteLine("필요한 아이템을 얻을 수 있는 상점입니다.");
                 Console.WriteLine();
@@ -283,16 +300,10 @@ namespace ConsoleApp9
                 Console.WriteLine("[아이템 목록]");
                 for (int i = 0; i < itemManager.Items.Count; i++)
                 {
-                    if (itemManager.Items[i].Attack == 0)
-                    {
-                        string purchasedStatus = (itemManager.Items[i].Purchased) ? "구매완료" : $"{itemManager.Items[i].Price} G";
-                        Console.WriteLine($"- {itemManager.Items[i].Name} | {itemManager.Items[i].Ability} {itemManager.Items[i].Defense} | {itemManager.Items[i].Description} | {purchasedStatus}");
-                    }
-                    else if (itemManager.Items[i].Defense == 0)
-                    {
-                        string purchasedStatus = (itemManager.Items[i].Purchased) ? "구매완료" : $"{itemManager.Items[i].Price} G";
-                        Console.WriteLine($"- {itemManager.Items[i].Name} | {itemManager.Items[i].Ability} {itemManager.Items[i].Attack} | {itemManager.Items[i].Description} | {purchasedStatus}");
-                    }
+                    string equipped = (itemManager.Items[i].Equipped) ? "[E]" : "";
+                    string abilityInfo = (itemManager.Items[i].Attack > 0) ? $"공격력 +{itemManager.Items[i].Attack}" : $"방어력 +{itemManager.Items[i].Defense}";
+                    string purchasedStatus = (itemManager.Items[i].Purchased) ? "구매완료" : $"{itemManager.Items[i].Price} G";
+                    Console.WriteLine($"- {i + 1} {equipped}{itemManager.Items[i].Name} | {abilityInfo} | {itemManager.Items[i].Description} | {purchasedStatus}");
                 }
                 Console.WriteLine();
                 Console.WriteLine("0. 나가기");
@@ -312,10 +323,13 @@ namespace ConsoleApp9
                         else
                         {
                             Console.WriteLine("잘못된 입력입니다.");
+                            Console.WriteLine("계속하려면 아무 키나 누르세요...");
+                            Console.ReadKey();
                         }
                         break;
                 }
             }
+
 
             private void BuyItem(int index)
             {
@@ -324,16 +338,22 @@ namespace ConsoleApp9
                 {
                     player.Gold -= selected.Price;
                     selected.Purchased = true;
-                    player.Inventory.Add(selected); // 인벤토리에 아이템 추가
+                    player.Inventory.Add(selected); 
                     Console.WriteLine($"'{selected.Name}'을(를) 구매했습니다.");
+                    Console.WriteLine("계속하려면 아무 키나 누르세요...");
+                    Console.ReadKey(); 
                 }
                 else if (selected.Purchased)
                 {
                     Console.WriteLine("이미 구매한 아이템입니다.");
+                    Console.WriteLine("계속하려면 아무 키나 누르세요...");
+                    Console.ReadKey();
                 }
                 else
                 {
                     Console.WriteLine("보유한 골드가 부족하거나 구매할 수 없는 아이템입니다.");
+                    Console.WriteLine("계속하려면 아무 키나 누르세요...");
+                    Console.ReadKey();
                 }
             }
         }
@@ -356,18 +376,14 @@ namespace ConsoleApp9
                 Name = name;
                 Job = job;
                 Attack = attack;
-                Defense = defense;
+                Defense = defense; 
                 Health = health;
                 Gold = gold;
                 Inventory = new List<Item>();
             }
 
-            public void EquipItem(Item item)
-            {
-                item.Equipped = true;
-                Console.WriteLine($"아이템 '{item.Name}'을(를) 장착했습니다.");
-            }
         }
+
 
 
         class ItemManager
@@ -395,7 +411,7 @@ namespace ConsoleApp9
             ItemManager itemManager = new ItemManager();
             while (true)
             {
-
+                Console.Clear();
                 Console.WriteLine("스파르타 마을에 오신 여러분 환영합니다.");
                 Console.WriteLine("이곳에서 던전으로 들어가기전 활동을 할 수 있습니다.");
                 Console.WriteLine();
